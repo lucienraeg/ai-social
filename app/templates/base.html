@@ -1,0 +1,30 @@
+<html>
+    <head>
+        {% if title %}
+            <title>{{ title }} - ai-social</title>
+        {% else %}
+            <title>ai-social</title>
+        {% endif %}
+
+        <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono'>
+        <link rel='stylesheet' 
+        href='{{ url_for("static", filename="css/main.css") }}'>
+
+
+    </head>
+    <body>
+        <div class='navbar'>
+            <ul>
+                <li><a href={{ url_for('feed') }}><b>ai-social</b></a></li> | 
+                <li><a href={{ url_for('feed') }}>explore</a></li>
+                <li><a href={{ url_for('feed') }} style='float:right;'>how does this work?</a></li>
+            </ul>
+        </div>
+        
+        {% block content %}{% endblock %}
+
+        <p style='color:#839496;'>Created by Lucien Rae 2018</p>
+        
+    </body>
+</html>
