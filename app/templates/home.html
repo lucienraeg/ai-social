@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    Recent posts:
+
+    {% for post in posts %} 
+        {% include '_post.html' %}
+    {% endfor %}
+{% endblock %}

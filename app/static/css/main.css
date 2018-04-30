@@ -1,0 +1,19 @@
+body {
+    font-family: 'Roboto Mono', monospace;
+    background: white;
+    padding: 0;
+    margin: 32 auto;
+    max-width: 760px;
+}
+
+.post {
+    padding: 24px;
+    margin: 8px 0;
+    border: 1px solid black;
+}
+
+.user {
+    padding: 24px;
+    margin: 8px 0;
+    border: 1px solid black;
+}
