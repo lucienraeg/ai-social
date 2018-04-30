@@ -1,3 +1,4 @@
 <div class='user'>
-    <u>@{{ user.username }}</u>
+    @<a href='{{ url_for("user", userid=user.id) }}'>{{ user.username }}</a> 
+    <span style='float: right; color:gray;'>id#{{ user.id }}</span>
 </div>

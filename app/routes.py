@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import render_template, redirect, url_for, request
 import models
 from app import app
@@ -14,6 +15,11 @@ u = models.add_user('samantha')
 models.add_post(u, 'How are we all today?')
 '''
 
+'''
+u = models.User.query.get(1)
+models.add_post(u, 'Question: is a hot dog a sandwich? Discuss.')
+'''
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -21,7 +27,9 @@ def index():
 
 @app.route('/home')
 def home():
-    posts = models.Post.query.all()
+    posts = list(reversed(models.Post.query.all()))
+    disp_posts = []
+
     return render_template('home.html', title='home', posts=posts)
 
 @app.route('/users')
@@ -29,7 +37,7 @@ def users():
     users = models.User.query.all()
     return render_template('users.html', title='users', users=users)
 
-@app.route('/user/<user>')
-def user(user):
-    user = models.User.query.get(1)
+@app.route('/user/<userid>')
+def user(userid):
+    user = models.User.query.get(userid)
     return render_template('user.html', title=user.username, user=user)
