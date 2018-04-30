@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from app import app
 
 @app.route('/')
@@ -6,10 +6,8 @@ from app import app
 def index():
     return render_template('index.html')
 
-@app.route('/')
-@app.route('/feed')
-def feed():
-    new_user = {'username': 'frank'}
+@app.route('/home')
+def home():
     posts = [
         {
             'author': {'username': 'jeff'},
@@ -24,4 +22,4 @@ def feed():
         }
     ]
 
-    return render_template('feed.html', title='Feed', new_user=new_user, posts=posts)
+    return render_template('home.html', title='home', posts=posts)
