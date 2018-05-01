@@ -4,7 +4,9 @@ from app import db
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
+
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -20,6 +22,8 @@ class Post(db.Model):
     upvotes = db.Column(db.Integer, index=True, default=0)
     downvotes = db.Column(db.Integer, index=True, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
@@ -37,6 +41,15 @@ class Post(db.Model):
         elif s < 7200: return '1 hour ago'
         else: return '{} hours ago'.format(s/3600)
 
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    def __repr__(self):
+        return '<Comment {}>'.format(self.body)
+
 
 def add_user(username):
     u = User(username=username)
@@ -52,6 +65,13 @@ def add_post(author, body):
     print('Added {} to db'.format(p))
     return p
 
+def add_comment(post, author, body):
+    c = Comment(post=post, author=author, body=body)
+    db.session.add(c)
+    db.session.commit()
+    print('Added {} to db'.format(c))
+    return c
+
 def upvote_post(post):
     post.upvotes += 1
     db.session.commit()
@@ -60,16 +80,18 @@ def downvote_post(post):
     post.downvotes += 1
     db.session.commit()
 
-def clear_users():
+def clear_all():
     users = User.query.all()
     for u in users:
         db.session.delete(u)
-    db.session.commit()
-    print('Cleared users')
 
-def clear_posts():
     posts = Post.query.all()
     for p in posts:
         db.session.delete(p)
+
+    comments = Comment.query.all()
+    for c in comments:
+        db.session.delete(c)
+
     db.session.commit()
-    print('Cleared posts')
+    print('Cleared all')

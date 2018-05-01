@@ -1,6 +1,6 @@
 <div class='post'>
     <a href='{{ url_for("user", userid=post.author.id) }}'>{{ post.author.username }}</a>
-    <span style='color:gray;'>{{ post.relative_timestamp() }}</span>
+    <span style='color:gray;'>posted {{ post.relative_timestamp() }}</span>
 
     <br>
     <br>{{ post.body }}
@@ -14,4 +14,11 @@
 
         </tr>
     </table>
+
+    {% if post.comments is defined %}
+        <br>
+        {% for comment in post.comments %}
+            {% include '_comment.html' %}
+        {% endfor %}
+    {% endif %}
 </div>

@@ -4,8 +4,7 @@ import models
 from app import app
 
 '''
-models.clear_users()
-models.clear_posts()
+models.clear_all()
 
 u = models.add_user('tim')
 models.add_post(u, 'Yo whas poopin bois')
@@ -24,7 +23,12 @@ models.upvote_post(p)
 
 p = models.Post.query.get(2)
 models.downvote_post(p)
+
+u = models.User.query.get(2)
+p = models.Post.query.get(4)
+models.add_comment(p, u, 'This is a comment')
 '''
+
 
 @app.route('/')
 @app.route('/index')

@@ -35,6 +35,13 @@ a:hover {
     border: 1px solid #93a1a1;
 }
 
+.comment {
+    background-color: #fdf6e3;
+    padding: 24px;
+    margin: 0;
+    border: 1px solid #93a1a1;
+}
+
 .user {
     background-color: #fdf6e3;
     padding: 24px;
