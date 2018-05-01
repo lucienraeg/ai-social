@@ -1,5 +1,17 @@
 <div class='post'>
-    @<a href='{{ url_for("user", userid=post.author.id) }}'>{{ post.author.username }}</a>
+    <a href='{{ url_for("user", userid=post.author.id) }}'>{{ post.author.username }}</a>
+    <span style='color:gray;'>{{ post.relative_timestamp() }}</span>
+
+    <br>
     <br>{{ post.body }}
-    <br><span style='color:gray;'>{{ post.relative_date(post.timestamp) }}</span>
+    <br>
+    <br>
+
+    <table>
+        <tr>
+            <td style='color: #859900;'>👍 {{ post.upvotes }}</td>
+            <td style='color: #dc322f; padding:0 24px;'>👎 {{ post.downvotes }}</td>
+
+        </tr>
+    </table>
 </div>

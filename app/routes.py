@@ -12,12 +12,18 @@ models.add_post(u, 'Yo whas poopin bois')
 models.add_post(u, 'We all good in the hood')
 
 u = models.add_user('samantha')
-models.add_post(u, 'How are we all today?')
-'''
+models.add_post(u, 'Look it\'s time for some words... El gobierno quiere comer \
+todos las gatos! No esta en melbourne, god it can be difficult to write about nothing')
 
-'''
-u = models.User.query.get(1)
-models.add_post(u, 'Question: is a hot dog a sandwich? Discuss.')
+u = models.add_user('john')
+models.add_post(u, 'How are we all today? I just thinks it\'s fantastic that we \
+can all enjoy citrus fruit.')
+
+p = models.Post.query.get(3)
+models.upvote_post(p)
+
+p = models.Post.query.get(2)
+models.downvote_post(p)
 '''
 
 @app.route('/')
@@ -28,7 +34,6 @@ def index():
 @app.route('/home')
 def home():
     posts = list(reversed(models.Post.query.all()))
-    disp_posts = []
 
     return render_template('home.html', title='home', posts=posts)
 

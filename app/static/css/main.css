@@ -1,19 +1,43 @@
+/*
+base0:      eee8d5
+base1:      fdf6e3
+tone0:      93a1a1
+tone1:      839496
+cyan:       2aa198
+green:      859900
+orange:     cb4b16
+*/
+
 body {
     font-family: 'Roboto Mono', monospace;
-    background: white;
+    background: #eee8d5;
     padding: 0;
     margin: 32 auto;
     max-width: 760px;
 }
 
+a {
+    color: #2aa198;
+    text-decoration: none;
+    -webkit-transition-duration: 0.1s; /* Safari */
+    transition-duration: 0.1s;
+}
+
+a:hover {
+    color: white;
+    background-color: #2aa198;
+}
+
 .post {
+    background-color: #fdf6e3;
     padding: 24px;
     margin: 8px 0;
-    border: 1px solid black;
+    border: 1px solid #93a1a1;
 }
 
 .user {
+    background-color: #fdf6e3;
     padding: 24px;
     margin: 8px 0;
-    border: 1px solid black;
+    border: 1px solid #cb4b16;
 }

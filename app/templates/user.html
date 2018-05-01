@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    Recent posts from @{{ user.username }}:
-    {% for post in user.posts %}
+    {% include '_user.html' %}
+
+    <br><hr><br>
+
+    Recent activity from 
+    <a href='{{ url_for("user", userid=user.id) }}'>{{ user.username }}</a>:
+    {% for post in user.posts_reversed() %}
         {% include '_post.html' %}
     {% endfor %}
 {% endblock %}

@@ -4,24 +4,28 @@ from app import db
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
-
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+    def posts_reversed(self):
+        return list(reversed(list(self.posts)))
+
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, 
-                          default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    upvotes = db.Column(db.Integer, index=True, default=0)
+    downvotes = db.Column(db.Integer, index=True, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
 
-    def relative_date(self, timestamp):
-        diff = datetime.utcnow() - timestamp
+    def relative_timestamp(self):
+        diff = datetime.utcnow() - self.timestamp
         s = diff.seconds
         if diff.days > 7 or diff.days < 0: return d.strftime('%d %b %y')
         elif diff.days == 1: return '1 day ago'
@@ -32,6 +36,7 @@ class Post(db.Model):
         elif s < 3600: return '{} minutes ago'.format(s/60)
         elif s < 7200: return '1 hour ago'
         else: return '{} hours ago'.format(s/3600)
+
 
 def add_user(username):
     u = User(username=username)
@@ -46,6 +51,14 @@ def add_post(author, body):
     db.session.commit()
     print('Added {} to db'.format(p))
     return p
+
+def upvote_post(post):
+    post.upvotes += 1
+    db.session.commit()
+
+def downvote_post(post):
+    post.downvotes += 1
+    db.session.commit()
 
 def clear_users():
     users = User.query.all()
