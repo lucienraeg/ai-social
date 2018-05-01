@@ -5,7 +5,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
 
+    # relationships
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    votes = db.relationship('Vote', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
     def __repr__(self):
@@ -23,7 +25,9 @@ class Post(db.Model):
     downvotes = db.Column(db.Integer, index=True, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    # relationships
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+    votes = db.relationship('Vote', backref='post', lazy='dynamic')
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
@@ -40,6 +44,15 @@ class Post(db.Model):
         elif s < 3600: return '{} minutes ago'.format(s/60)
         elif s < 7200: return '1 hour ago'
         else: return '{} hours ago'.format(s/3600)
+
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sway = db.Column(db.Integer, index=True) # -1 or 1
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
+
+    def __repr__(self):
+        return '<Vote {}>'.format(self.sway)
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -72,12 +85,16 @@ def add_comment(post, author, body):
     print('Added {} to db'.format(c))
     return c
 
-def upvote_post(post):
+def upvote_post(post, author):
     post.upvotes += 1
+    v = Vote(post=post, author=author, sway=1)
+    db.session.add(v)
     db.session.commit()
 
-def downvote_post(post):
+def downvote_post(post, author):
     post.downvotes += 1
+    v = Vote(post=post, author=author, sway=-1)
+    db.session.add(v)
     db.session.commit()
 
 def clear_all():
@@ -88,6 +105,10 @@ def clear_all():
     posts = Post.query.all()
     for p in posts:
         db.session.delete(p)
+
+    votes = Vote.query.all()
+    for v in votes:
+        db.session.delete(v)
 
     comments = Comment.query.all()
     for c in comments:

@@ -15,10 +15,19 @@
         </tr>
     </table>
 
-    {% if post.comments is defined %}
+    <!--
+    <br>
+    {% for vote in post.votes %}
+        {{ vote.author.username }} {{ vote.sway }}
+    {% endfor %}
+    {% if post.comments.count() > 0%}
         <br>
+        Comments:
+        <br><br>
         {% for comment in post.comments %}
             {% include '_comment.html' %}
         {% endfor %}
     {% endif %}
+     -->
+     
 </div>

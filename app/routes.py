@@ -18,15 +18,13 @@ u = models.add_user('john')
 models.add_post(u, 'How are we all today? I just thinks it\'s fantastic that we \
 can all enjoy citrus fruit.')
 
+u = models.User.query.get(1)
 p = models.Post.query.get(3)
-models.upvote_post(p)
-
-p = models.Post.query.get(2)
-models.downvote_post(p)
+models.upvote_post(p, u)
 
 u = models.User.query.get(2)
-p = models.Post.query.get(4)
-models.add_comment(p, u, 'This is a comment')
+p = models.Post.query.get(2)
+models.downvote_post(p, u)
 '''
 
 
